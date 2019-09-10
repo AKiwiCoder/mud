@@ -1,0 +1,11 @@
+language: java
+jdk: 
+ - openjdk11
+addons:
+  sonarcloud:
+    organization: "akiwicoder"
+    token:
+      secure: "HEFmfNgPa8mdQTnNiAM6aGOvhiZaEICcxemFt+WLYMa6BoyvQxzeuSWWEBKqnfcjNSsA4mUxuTpYtFfKkmTmJgGKeo8TBesjhOGCnWiD14CwtLF87zbJpMjw0CKAFXjcqP/eMrfC4qtSsgF+vCNPc1xe3aCTMYAAr0UEK8ZUq93HCDXz2w+fPP0WRSf/tY1OOPK45BkrWb87d+R6aIeC0fWsZ2TjxJr9p0aQYV2fnE7SsYxZJLTzAFIU5p3xtgMxbATD0P8srIpZ/WC1b73Yj+s+RRrE+zSC84dJeutoE1XKql15Z1XBDLT/5cFrWkGwhSsnTG3TwV1Mxlnfs9EkhPkvsas4bitSg1yMbBu/NAo5qlo0OEYsN8ubeNN1OrJw2c0QTX7fK4VNe4vw2qoCyFmUp9CBgZL6GycsIUjJV+SHFXw6HSGht/KPqjU73R+UCO5t0StpY+J3jeWafkuJIgOdOepmyRbbdn0podZWAggBahC4zsOuIqXDj2a3vTnNSSMrISJhnBWWJrTCslfN07z2tfze2RV5CPAIMY5dol1OEqATtUz3S8CS4FtEzZ94Ypzx7YqwDPQlOZx42dTi6gp6AlyfTjVSs0fy/Rg0w0bDwaNLnD9oaHqUKO38g66Wx01NrGpiSPMtHwaC5sfnMzMjCn+JsY8x10lzjPUGj4k="
+script:
+  # the following command line builds the project, runs the tests with coverage and then execute the SonarCloud analysis
+  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=AKiwiCoder_mud-world
