@@ -8,24 +8,41 @@ import com.arrggh.mudworld.bus.fixtures.TestHandlerWithTwoArgsHandler;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class EventBusTest {
     @Test
-    public void eventBus_hasNoEventsOnCreation() {
+    public void testHasNoEventsOnCreation() {
         IEventBus bus = new EventBus();
         assertEquals(0, bus.getPendingEventCount());
     }
 
     @Test
-    public void eventBus_addedEventWithNoListenersHasOneEvent() {
+    public void testAddedEventWithNoListenersHasOneEvent() {
         IEventBus bus = new EventBus();
         bus.postEvent(new Object());
         assertEquals(1, bus.getPendingEventCount());
     }
 
     @Test
-    public void eventBus_addedEventWithMultipleMethodHasNoEventAfterPoll() {
+    public void testPollWithNoEventsReturnsFalse() {
+        IEventBus bus = new EventBus();
+        assertEquals(0, bus.getPendingEventCount());
+        assertFalse(bus.poll());
+    }
+
+    @Test
+    public void testPollWithPendingEventsReturnsTrue() {
+        IEventBus bus = new EventBus();
+        bus.postEvent(new Object());
+        bus.postEvent(new Object());
+        assertEquals(2, bus.getPendingEventCount());
+        assertTrue(bus.poll());
+        assertFalse(bus.poll());
+    }
+
+    @Test
+    public void testAddedEventWithMultipleMethodHasNoEventAfterPoll() {
         IEventBus bus = new EventBus();
         TestHandlerWithAdditionalHandler handler = new TestHandlerWithAdditionalHandler();
         bus.addHandler(handler);
@@ -42,7 +59,7 @@ public class EventBusTest {
     }
 
     @Test
-    public void eventBus_addedEventWithListenersHasNoEventAfterPoll() {
+    public void testAddedEventWithListenersHasNoEventAfterPoll() {
         IEventBus bus = new EventBus();
         TestHandlerWithOneHandler handler = new TestHandlerWithOneHandler();
         bus.addHandler(handler);
@@ -56,7 +73,7 @@ public class EventBusTest {
 
 
     @Test
-    public void eventBus_addedEventWithValidListenersHasNoEventAfterPoll() {
+    public void testAddedEventWithValidListenersHasNoEventAfterPoll() {
         IEventBus bus = new EventBus();
         TestHandlerWithOneHandler handler = new TestHandlerWithOneHandler();
         bus.addHandler(handler);
@@ -69,7 +86,7 @@ public class EventBusTest {
     }
 
     @Test
-    public void eventBus_addedEventWithMultipleListenersEachGetEventAfterPoll() {
+    public void testAddedEventWithMultipleListenersEachGetEventAfterPoll() {
         IEventBus bus = new EventBus();
         TestHandlerWithOneHandler handler1 = new TestHandlerWithOneHandler();
         TestHandlerWithOneHandler handler2 = new TestHandlerWithOneHandler();
@@ -86,7 +103,7 @@ public class EventBusTest {
     }
 
     @Test
-    public void eventBus_throwsExceptionWithNoParameterHandler() {
+    public void testThrowsExceptionWithNoParameterHandler() {
         IEventBus bus = new EventBus();
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
             bus.addHandler(new TestHandlerWithNoArgsHandler());
@@ -94,7 +111,7 @@ public class EventBusTest {
     }
 
     @Test
-    public void eventBus_throwsExceptionWithTwoParameterHandler() {
+    public void testThrowsExceptionWithTwoParameterHandler() {
         IEventBus bus = new EventBus();
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
             bus.addHandler(new TestHandlerWithTwoArgsHandler());

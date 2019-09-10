@@ -65,7 +65,7 @@ public class EventBus implements IEventBus {
     @Override
     public boolean poll() {
         synchronized (lock) {
-            if (events.size() > 0) {
+            if (!events.isEmpty()) {
                 Object event = events.remove(0);
                 List<Entry> handlers = handlerMethods.get(event.getClass());
                 if (handlers == null) {
@@ -84,7 +84,7 @@ public class EventBus implements IEventBus {
                     }
                 }
             }
-            return events.size() > 0;
+            return !events.isEmpty();
         }
     }
 }
