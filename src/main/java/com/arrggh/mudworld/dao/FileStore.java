@@ -39,11 +39,9 @@ public class FileStore implements IFileStore {
     public void write(String key, String content) {
         File file = new File(directory, key);
         logger.info("Writing file " + file);
-        try {
-            file.getParentFile().mkdirs();
-            Writer writer = new FileWriter(file);
+        file.getParentFile().mkdirs();
+        try (Writer writer = new FileWriter(file)) {
             writer.write(content);
-            writer.close();
         } catch (IOException e) {
             throw new DaoException("FileStore cannot write " + key, e);
         }
