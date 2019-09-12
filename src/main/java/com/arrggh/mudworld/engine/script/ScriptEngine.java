@@ -15,7 +15,7 @@ public class ScriptEngine {
         SandboxFilter filter = new SandboxFilter();
         filter.register();
 
-        sh.evaluate("");
+        sh.evaluate("println('Hello World');");
     }
 
     public static void main(String[] args) {
