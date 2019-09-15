@@ -1,0 +1,21 @@
+n <TARGET> | MoveNorth
+s <TARGET> | MoveSouth
+e <TARGET> | MoveEast
+w <TARGET> | MoveWest
+u <TARGET> | MoveUp
+d <TARGET> | MoveDown
+north <TARGET> | MoveNorth
+south <TARGET> | MoveSouth
+east <TARGET> | MoveEast
+west <TARGET> | MoveWest
+up <TARGET> | MoveUp
+down <TARGET> | MoveDown
+enter <TARGET> | MoveEnter
+look <TARGET> | Look
+put [TARGET] in [TARGET] | PutIn
+put [TARGET] down | PutDown
+attack [TARGET] | Attack
+kill [TARGET] | Kill
+flee | Flee
+lock [TARGET] | Lock
+unlock [TARGET] | Unlock
