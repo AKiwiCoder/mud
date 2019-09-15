@@ -11,21 +11,21 @@ public class TelnetServerHandler  extends IoHandlerAdapter {
 
     @Override
     public void sessionOpened(IoSession ioSession) throws Exception {
-
+        logger.info("Session Opened");
     }
 
     @Override
     public void sessionClosed(IoSession ioSession) throws Exception {
-
+        logger.info("Session Closed");
     }
 
     @Override
     public void sessionIdle(IoSession ioSession, IdleStatus idleStatus) throws Exception {
-
+        logger.info("Session Idel");
     }
 
     @Override
     public void messageReceived(IoSession ioSession, Object o) throws Exception {
-
+        logger.info("Message Received");
     }
 }
