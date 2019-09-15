@@ -20,14 +20,14 @@ public class FileStore implements IFileStore {
     @Override
     public boolean exists(String key) {
         File file = new File(directory, key);
-        logger.info("Reading file " + file);
+        logger.info("Reading file '{}'", file);
         return file.exists();
     }
 
     @Override
     public String read(String key) {
         File file = new File(directory, key);
-        logger.info("Reading file " + file);
+        logger.info("Reading file '{}'",  file);
         try {
             return Files.readString(file.toPath());
         } catch (IOException e) {
@@ -38,7 +38,7 @@ public class FileStore implements IFileStore {
     @Override
     public void write(String key, String content) {
         File file = new File(directory, key);
-        logger.info("Writing file " + file);
+        logger.info("Writing file '{}'", file);
         file.getParentFile().mkdirs();
         try (Writer writer = new FileWriter(file)) {
             writer.write(content);
@@ -50,7 +50,9 @@ public class FileStore implements IFileStore {
     @Override
     public void delete(String key) {
         File file = new File(directory, key);
-        logger.info("Deleting file " + file);
-        file.delete();
+        logger.info("Deleting file '{}'", file);
+        if (!file.delete()) {
+            throw new DaoException("FileStore cannot delete " + key);
+        }
     }
 }

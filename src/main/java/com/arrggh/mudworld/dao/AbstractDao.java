@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public abstract class AbstractDao<T> implements IDao<T> {
+    public static final String IDS_FILE_KEY = "ids.json";
     private final Logger logger = LoggerFactory.getLogger(AbstractDao.class);
 
     private final ObjectMapper mapper = new ObjectMapper();
@@ -19,8 +20,8 @@ public abstract class AbstractDao<T> implements IDao<T> {
     public AbstractDao(IFileStore store) {
         this.store = store;
 
-        if (store.exists("ids.json")) {
-            store.read("ids.json");
+        if (store.exists(IDS_FILE_KEY)) {
+            store.read(IDS_FILE_KEY);
         }
 
     }
@@ -30,16 +31,18 @@ public abstract class AbstractDao<T> implements IDao<T> {
         long result = nextIdMap.getOrDefault(key, 0l);
         nextIdMap.put(key, result + 1);
         try {
-            store.write("ids.json", mapper.writeValueAsString(nextIdMap));
+            store.write(IDS_FILE_KEY, mapper.writeValueAsString(nextIdMap));
         } catch (JsonProcessingException e) {
             throw new DaoException("Cannot save next id map", e);
         }
+        logger.info("getNextId for key '" + key + "' returning " + result);
         return result;
     }
 
     @Override
     public T read(long id) {
         try {
+            logger.info("Reading '{} with id '{}'", getEntityClass().getSimpleName(), id);
             return mapper.readValue(store.read(buildKey(id)), getEntityClass());
         } catch (IOException e) {
             throw new DaoException("Cannot read entity with id " + buildKey(id), e);
@@ -62,6 +65,8 @@ public abstract class AbstractDao<T> implements IDao<T> {
     }
 
     protected abstract Class<T> getEntityClass();
+
     protected abstract long getId(T object);
+
     protected abstract String buildKey(long id);
 }
